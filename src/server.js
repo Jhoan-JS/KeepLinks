@@ -1,9 +1,11 @@
 const express = require("express");
 const path = require("path");
 const exphbs = require("express-handlebars");
+const methodOverride = require("method-override");
 //Initializations
 const app = express();
 require("./config/database");
+require("./models/LinksModel");
 
 //Settings
 app.use(express.static(path.join(__dirname, "public")));
@@ -23,6 +25,7 @@ app.set("view engine", ".hbs");
 //Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(methodOverride("_method"));
 
 //Routes
 app.use(require("./routes/index"));

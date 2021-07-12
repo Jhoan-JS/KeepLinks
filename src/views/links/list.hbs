@@ -1,17 +1,34 @@
+<div class="row mt-2">
+  {{#each links}}
+    <div class="col-lg-4 col-md-6 mt-4">
+      <div class="card text-center bg-dark text-light">
+        <div class="card-body">
 
+          <h2 class="card-title font-weight-bold display-4">
+            <a class="text-decoration-none" href="{{url}}">{{title}}</a></h2>
+          <p class="lead">Description</p>
 
-<div class="row mt-2 ">
-    <div class="col-lg-4 col-md-6 mt-4 ">
-        <div class="card text-center bg-dark text-light">
-            <div class="card-body">
-             
-                    <h3 class="card-title ">Title</h3>
-                    <p>Description</p>
+          <form action="/links/delete/{{_id}}?_method=DELETE" method="post">
+            <button
+              type="submit"
+              href="/links/delete/{{_id}}"
+              class="btn btn-danger btn-block lead font-weight-bold"
+            >Delete</button>
+          </form>
 
-                    <a class="btn btn-danger btn-block">Delete</a>
-            </div>
         </div>
+      </div>
     </div>
-    
-     
+
+  {{else}}
+    <div class="col-md-4 mx-auto">
+      <div class="card card-body bg-dark text-light text-center">
+        <h3>There are not links save yet.</h3>
+        <a
+          href="/links/new-link"
+          class="mt-4 btn btn-success btn-block lead"
+        >Create one!</a>
+      </div>
+    </div>
+  {{/each}}
 </div>
