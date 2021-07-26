@@ -1,20 +1,23 @@
 <div class="row">
 
   <div class="col-md-5 mx-auto p-2">
-
     <div class="card text-center">
+
       <div class="card-header">
-        <h3>New Link</h3>
+        <h3>Edit</h3>
       </div>
+
       <div class="card-body">
-        <form action="/links/new-link" method="POST">
+        <form action="/links/edit/{{_id}}?_method=PUT" method="post">
+
           <div class="form-group">
             <input
               type="text"
               name="title"
               class="form-control"
-              placeholder="Title"
               value="{{title}}"
+              placeholder="Title"
+              autofocus
               id=""
             />
           </div>
@@ -23,9 +26,9 @@
             <input
               type="url"
               name="url"
+              value="{{url}}"
               class="form-control"
               placeholder="Link"
-              value="{{url}}"
               id=""
             />
           </div>
@@ -36,6 +39,7 @@
               id=""
               placeholder="Description"
               class="form-control"
+              value="{{description}}"
             >{{description}}</textarea>
           </div>
 
@@ -47,6 +51,6 @@
         </form>
       </div>
     </div>
-
   </div>
+
 </div>

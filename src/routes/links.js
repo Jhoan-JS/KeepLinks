@@ -21,8 +21,8 @@ Router.post(
   async (req, res) => {
     const { title, url, description } = req.body;
 
-    const errors = validationResult(req);
-    const allErrors = errors.errors;
+    const validation = validationResult(req);
+    const errors = errors.errors;
     if (!errors.isEmpty()) {
       // req.flash("error_msg");
       // res.redirect("/links/new-link");
@@ -30,11 +30,9 @@ Router.post(
         title,
         url,
         description,
-        errors: allErrors
+        errors
       });
     } else {
-      console.log();
-      console.log(validationResult(req).lenght);
       const link = new Link({
         title,
         url,
@@ -49,13 +47,40 @@ Router.post(
 );
 
 //Edit one link
-Router.get("/link/edit/:id", (req, res) => {
-  res.send("Edit one");
+Router.get("/links/edit/:id", async (req, res) => {
+  const link = await Link.findOne({ _id: req.params.id });
+  const { _id, title, url, description } = link;
+
+  res.render("links/edit-link", { _id, title, url, description });
 });
 
-Router.put("/link/edit/:id", (req, res) => {
-  res.send("Editing");
-});
+Router.put(
+  "/links/edit/:id",
+  body("title", "Title is required").not().isEmpty(),
+  body("url", "Url is required").not().isEmpty(),
+  async (req, res) => {
+    const _id = req.params.id;
+    const { title, url, description } = req.body;
+
+    const validation = validationResult(req);
+
+    //See if there are errors
+    if (!validation.isEmpty()) {
+      const errors = validation.errors;
+      res.render("links/edit-link", {
+        _id,
+        title,
+        url,
+        description,
+        errors
+      });
+    } else {
+      await Link.findByIdAndUpdate(_id, { title, url, description });
+      req.flash("success_msg", "Link Updated Successfully");
+      res.redirect("/links");
+    }
+  }
+);
 
 //Delete one link
 
