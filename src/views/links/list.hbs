@@ -6,16 +6,24 @@
 
           <h2 class="card-title font-weight-bold display-4">
             <a class="text-decoration-none" href="{{url}}">{{title}}</a></h2>
-          <p class="lead">Description</p>
+          <p class="lead">{{description}}</p>
 
-          <form action="/links/delete/{{_id}}?_method=DELETE" method="post">
-            <button
-              type="submit"
-              href="/links/delete/{{_id}}"
-              class="btn btn-danger btn-block lead font-weight-bold"
-            >Delete</button>
-          </form>
+          <div class="row">
+            <div class="col-sm-6 pt-3">
+              <!-- DELETE REQUEST -->
+              <form action="/links/delete/{{_id}}?_method=DELETE" method="post">
+                <button
+                  type="submit"
+                  class="btn btn-danger btn-block lead font-weight-bold"
+                >Delete</button>
+              </form>
+            </div>
 
+            <!-- EDIT REQUEST --->
+            <div class="col-sm-6 pt-3">
+              <a href="" class="btn btn-secondary btn-block">Edit</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

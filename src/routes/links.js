@@ -1,4 +1,5 @@
 const Router = require("express").Router();
+const { body, validationResult } = require("express-validator");
 const Link = require("../models/LinksModel");
 
 //Get all links
@@ -12,18 +13,40 @@ Router.get("/links", async (req, res) => {
 Router.get("/links/new-link", (req, res) => {
   res.render("links/new-link");
 });
-Router.post("/links/new-link", async (req, res) => {
-  const { title, url, description } = req.body;
+Router.post(
+  "/links/new-link",
+  body("title", "Title is required").not().isEmpty(),
+  body("url", "Url is required").not().isEmpty(),
 
-  const link = new Link({
-    title,
-    url,
-    description
-  });
-  await link.save();
+  async (req, res) => {
+    const { title, url, description } = req.body;
 
-  res.redirect("/links");
-});
+    const errors = validationResult(req);
+    const allErrors = errors.errors;
+    if (!errors.isEmpty()) {
+      // req.flash("error_msg");
+      // res.redirect("/links/new-link");
+      res.render("links/new-link", {
+        title,
+        url,
+        description,
+        errors: allErrors
+      });
+    } else {
+      console.log();
+      console.log(validationResult(req).lenght);
+      const link = new Link({
+        title,
+        url,
+        description
+      });
+      await link.save();
+
+      console.log("yes");
+      res.redirect("/links");
+    }
+  }
+);
 
 //Edit one link
 Router.get("/link/edit/:id", (req, res) => {
