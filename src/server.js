@@ -8,13 +8,11 @@ const passport = require("passport");
 
 //Initializations
 const app = express();
+require("dotenv").config();
 require("./config/database");
+require("./config/passport");
 // require("./models/LinksModel");
 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
-require("./config/passport");
 //Settings
 app.use(express.static(path.join(__dirname, "public")));
 app.set("port", process.env.PORT || 3000);
@@ -37,11 +35,14 @@ app.use(methodOverride("_method"));
 
 app.use(
   session({
-    secret: "thisismylitlesecret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 //Global variables
 

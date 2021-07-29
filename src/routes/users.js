@@ -46,8 +46,6 @@ Router.post(
 
 //Sign In
 Router.get("/users/signin", async (req, res) => {
-  console.log(req.flash("error")[0]);
-  const error = req.flash("error")[0];
   res.render("users/signin");
 });
 
