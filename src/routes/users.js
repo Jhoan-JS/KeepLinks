@@ -1,5 +1,6 @@
 const Router = require("express").Router();
 const User = require("../models/UserModel");
+const passport = require("passport");
 const { check, validationResult } = require("express-validator");
 const {
   validateConfirmPassword
@@ -45,7 +46,28 @@ Router.post(
 
 //Sign In
 Router.get("/users/signin", async (req, res) => {
+  console.log(req.flash("error")[0]);
+  const error = req.flash("error")[0];
   res.render("users/signin");
+});
+
+Router.post(
+  "/users/signin",
+  passport.authenticate("local", {
+    successRedirect: "/links/",
+    failureRedirect: "/users/signin",
+    failureFlash: true
+  }),
+  async (req, res) => {
+    console.log("hi");
+  }
+);
+
+//Logout
+Router.get("/log-out", (req, res) => {
+  req.logout();
+
+  res.redirect("/");
 });
 
 module.exports = Router;

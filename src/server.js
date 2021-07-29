@@ -9,8 +9,12 @@ const passport = require("passport");
 //Initializations
 const app = express();
 require("./config/database");
-require("./models/LinksModel");
+// require("./models/LinksModel");
 
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+require("./config/passport");
 //Settings
 app.use(express.static(path.join(__dirname, "public")));
 app.set("port", process.env.PORT || 3000);
@@ -38,18 +42,14 @@ app.use(
     saveUninitialized: false
   })
 );
-//Passport
-app.use(passport.initialize());
-app.use(passport.session());
 
-app.use(flash());
 //Global variables
 
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
   res.locals.error = req.flash("error");
-
+  res.locals.currentUser = req.user;
   next();
 });
 
