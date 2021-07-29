@@ -21,9 +21,9 @@ Router.post(
   async (req, res) => {
     const { title, url, description } = req.body;
 
-    const validation = validationResult(req);
-    const errors = errors.errors;
-    if (!errors.isEmpty()) {
+    const validations = validationResult(req);
+    const errors = validations.errors;
+    if (!validations.isEmpty()) {
       // req.flash("error_msg");
       // res.redirect("/links/new-link");
       res.render("links/new-link", {
