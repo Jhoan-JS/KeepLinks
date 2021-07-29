@@ -1,9 +1,10 @@
 const Router = require("express").Router();
 const { body, validationResult } = require("express-validator");
+const { isAuthenticated } = require("../helpers/authorize");
 const Link = require("../models/LinksModel");
 
 //Get all links
-Router.get("/links", async (req, res) => {
+Router.get("/links", isAuthenticated, async (req, res) => {
   const links = await Link.find({ user: req.user })
     .sort({ date: "desc" })
     .lean();
@@ -12,11 +13,12 @@ Router.get("/links", async (req, res) => {
 });
 
 //Add new link
-Router.get("/links/new-link", (req, res) => {
+Router.get("/links/new-link", isAuthenticated, (req, res) => {
   res.render("links/new-link");
 });
 Router.post(
   "/links/new-link",
+  isAuthenticated,
   body("title", "Title is required").not().isEmpty(),
   body("url", "Url is required").not().isEmpty(),
 
@@ -50,7 +52,7 @@ Router.post(
 );
 
 //Edit one link
-Router.get("/links/edit/:id", async (req, res) => {
+Router.get("/links/edit/:id", isAuthenticated, async (req, res) => {
   const link = await Link.findOne({ _id: req.params.id });
   const { _id, title, url, description } = link;
 
@@ -59,6 +61,7 @@ Router.get("/links/edit/:id", async (req, res) => {
 
 Router.put(
   "/links/edit/:id",
+  isAuthenticated,
   body("title", "Title is required").not().isEmpty(),
   body("url", "Url is required").not().isEmpty(),
   async (req, res) => {
@@ -87,7 +90,7 @@ Router.put(
 
 //Delete one link
 
-Router.delete("/links/delete/:id", async (req, res) => {
+Router.delete("/links/delete/:id", isAuthenticated, async (req, res) => {
   const { id } = req.params;
 
   await Link.findByIdAndRemove({ _id: id });
