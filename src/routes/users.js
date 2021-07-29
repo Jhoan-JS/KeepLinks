@@ -56,13 +56,11 @@ Router.post(
     failureRedirect: "/users/signin",
     failureFlash: true
   }),
-  async (req, res) => {
-    console.log("hi");
-  }
+  async (req, res) => {}
 );
 
 //Logout
-Router.get("/log-out", (req, res) => {
+Router.get("/users/logout", (req, res) => {
   req.logout();
 
   res.redirect("/");

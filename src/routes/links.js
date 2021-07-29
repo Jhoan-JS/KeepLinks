@@ -4,9 +4,11 @@ const Link = require("../models/LinksModel");
 
 //Get all links
 Router.get("/links", async (req, res) => {
-  const links = await Link.find().sort({ date: "desc" }).lean();
+  const links = await Link.find({ user: req.user })
+    .sort({ date: "desc" })
+    .lean();
 
-  res.render("links/list", { links });
+  res.render("links/list", { links, name: req.user.name });
 });
 
 //Add new link
@@ -36,7 +38,8 @@ Router.post(
       const link = new Link({
         title,
         url,
-        description
+        description,
+        user: req.user
       });
       await link.save();
 
