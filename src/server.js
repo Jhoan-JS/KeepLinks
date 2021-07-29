@@ -5,7 +5,7 @@ const methodOverride = require("method-override");
 var flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
-
+const MongoStore = require("connect-mongo");
 //Initializations
 const app = express();
 require("dotenv").config();
@@ -27,6 +27,7 @@ app.engine(
   })
 );
 app.set("view engine", ".hbs");
+app.set("trust proxy", 1);
 
 //Middlewares
 app.use(express.urlencoded({ extended: false }));
